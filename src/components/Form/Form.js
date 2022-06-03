@@ -1,49 +1,29 @@
-import {useState} from "react"
-import {connect} from 'react-redux'
-import contactsActions from "../../redux/contacts/contacts-actions";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import {addContact} from '../../redux/reduxSlice'
 import Input from "../Input/Input";
 import styles from "./Form.module.css";
-import { v4 as uuidv4 } from 'uuid'
 
-const Form = ({onSubmit}) => {
-  const [name, setName] = useState('')
-  const [number, setNumber] = useState('')
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+const Form = () => {
 
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const dispatch = useDispatch()
 
-      case "number":
-        setNumber(value);
-        break;
-
-      default:
-        return;
-    }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const id = uuidv4()
-    onSubmit({name, number, id});
-
-    reset();
-  };
-
-  const reset = () => {
-    setName('')
-    setNumber('');
-  };
-
+  const onSubmit = data => dispatch(addContact(data))
 
     return (
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.label}>Name</label>
+      // <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <input {...register("name", { required: true })} />
+      {errors.name?.type === 'required' && "Name is required"}
+      
+      <input {...register("number", { required: true })} />
+      {errors.number && "Number is required"}
+      
+      <button type="submit">Submit</button>
+      </form>
+        /* <label className={styles.label}>Name</label>
         <Input
           type={"text"}
           value={name}
@@ -68,12 +48,8 @@ const Form = ({onSubmit}) => {
         />
 
         <button type="submit">Add contact</button>
-      </form>
+      </form> */
     );
   }
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (contact) => dispatch(contactsActions.addContact(contact))
-})
-
-export default connect(null, mapDispatchToProps)(Form);
+export default Form

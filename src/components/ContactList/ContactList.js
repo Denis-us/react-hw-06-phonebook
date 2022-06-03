@@ -1,12 +1,25 @@
-import React from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {deleteContact} from '../../redux/reduxSlice'
 import styles from "./ContactList.module.css";
-import contactsActions from "../../redux/contacts/contacts-actions";
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+
+  const ContactList = () => {
+
+  const contacts = useSelector(state => state.contacts.contacts)
+  const filter = useSelector(state => state.filter.filter)
+
+  const dispatch = useDispatch()
+
+  const filteredContacts = (contacts, filter) => {
+    return contacts.filter(contact => (
+    contact.name.toLowerCase().includes(filter.toLowerCase())))
+  }
+
+  const filterContacts = filteredContacts(contacts, filter);
+
   return (
     <ul className={styles.contactsList}>
-      {contacts.map(({ id, name, number }) => (
+      {filterContacts.map(({ id, name, number }) => (
         <li key={id} className={styles.contactsElement}>
           <p className={styles.contactsData}>
             {name}: {number}
@@ -14,7 +27,7 @@ const ContactList = ({ contacts, onDeleteContact }) => {
           <button
             className={styles.btn}
             type="button"
-            onClick={() => onDeleteContact(id)}
+            onClick={() => dispatch(deleteContact(id))}
           >
             Delete
           </button>
@@ -24,17 +37,4 @@ const ContactList = ({ contacts, onDeleteContact }) => {
   );
 };
 
-const getVisibleContacts = (allContacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-  return allContacts.filter((contact) => contact.name.toLowerCase().includes(normalizedFilter))
-};
-
-const mapStateToProps = ({contacts: {items, filter}}) => ({
-  contacts: getVisibleContacts(items, filter)
-})
-
-const mapDispatchToProps = dispatch => ({
-  onDeleteContact: id => dispatch(contactsActions.deleteContact(id))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default ContactList
