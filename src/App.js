@@ -8,11 +8,11 @@ const App = () => {
 
     return (
       <div className={s.app}>
-        <Section title={"Phonebook"}>
+        <Section title='Телефонная книга'>
           <Form />
         </Section>
 
-        <Section title={"Contacts"}>
+        <Section title='Контакты'>
           <Filter />
           <ContactList />
         </Section>
