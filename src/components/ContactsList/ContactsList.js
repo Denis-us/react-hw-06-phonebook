@@ -29,7 +29,7 @@ import s from "./ContactsList.module.css";
             type="button"
             onClick={() => dispatch(deleteContact(id))}
           >
-            Delete
+            Удалить
           </button>
         </li>
       ))}
