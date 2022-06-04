@@ -11,7 +11,8 @@
 
 .btn {
   font-size: 15px;
-  width: 60px;
+  text-align: center;
+  width: 90px;
   height: 30px;
   margin-left: 20px;
 }
