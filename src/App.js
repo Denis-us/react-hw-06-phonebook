@@ -1,12 +1,13 @@
-import Form from "./components/Form/Form";
-import Section from "./components/Section/Section";
-import ContactList from "./components/ContactList/ContactList";
-import Filter from "./components/Filter/Filter";
+import Form from "./components/Form";
+import Section from "./components/Section";
+import ContactList from "./components/ContactsList";
+import Filter from "./components/Filter";
+import s from './App.module.css'
 
 const App = () => {
 
     return (
-      <>
+      <div className={s.app}>
         <Section title={"Phonebook"}>
           <Form />
         </Section>
@@ -15,7 +16,7 @@ const App = () => {
           <Filter />
           <ContactList />
         </Section>
-      </>
+      </div>
     );
   }
 
